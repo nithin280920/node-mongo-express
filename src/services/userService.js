@@ -1,11 +1,13 @@
 const User = require("../models/userModel");
+const bcrypt = require("bcrypt");
 
 const addUser = async (userObject) => {
   try {
+    userObject.password = await bcrypt.hash(userObject.password, 10);
     const userData = await User.create(userObject);
     return userData;
   } catch (error) {
-    throw new Error("Error in creating database: ", error);
+    throw error;
   }
 };
 
